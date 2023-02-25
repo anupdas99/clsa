@@ -18,14 +18,12 @@ public class MarketDataProcessor {
         Instant now = Instant.now();
         if (now.isBefore(slidingWindowStart.plus(SLIDING_WINDOW_DURATION))) {
             Integer calls = callsPerSecondMap.getOrDefault(data.getSymbol(), 0);
-            System.out.println("IF calls per sec " + calls);
             if (calls >= MAX_CALLS_PER_SECOND) {
                 return; // Limit exceeded, ignore this data
             }
             callsPerSecondMap.put(data.getSymbol(), calls + 1);
         } else {
             Integer calls = callsPerSecondMap.getOrDefault(data.getSymbol(), 0);
-            System.out.println("ELSE calls per sec " + calls);
             slidingWindowStart = now;
             callsPerSecondMap.clear();
             callsPerSecondMap.put(data.getSymbol(), 1);
